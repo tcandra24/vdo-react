@@ -9,8 +9,6 @@ import Login from "../views/auth/login";
 import Dashboard from "../views/admin/dashboard/index";
 
 import UsersIndex from "../views/admin/users/index";
-import UsersCreate from "../views/admin/users/create";
-import UsersEdit from "../views/admin/users/edit";
 
 import VideosIndex from "../views/admin/videos/index";
 import VideosCreate from "../views/admin/videos/create";
@@ -45,18 +43,6 @@ export default function AppRoutes() {
         path="/users"
         element={
           isAuthenticated ? <UsersIndex /> : <Navigate to="/login" replace />
-        }
-      />
-      <Route
-        path="/users/create"
-        element={
-          isAuthenticated ? <UsersCreate /> : <Navigate to="/login" replace />
-        }
-      />
-      <Route
-        path="/users/edit/:id"
-        element={
-          isAuthenticated ? <UsersEdit /> : <Navigate to="/login" replace />
         }
       />
       <Route
