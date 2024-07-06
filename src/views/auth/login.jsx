@@ -1,5 +1,7 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
 
 import {
   Button,
@@ -44,6 +46,8 @@ const Login = () => {
         throw new Error(data.message);
       }
 
+      toast.success(data.message);
+
       cookies.set("token", data.data.token);
       cookies.set("user", JSON.stringify(data.data.user));
 
@@ -62,51 +66,12 @@ const Login = () => {
       <AuthLayout>
         <Col lg="5" md="7">
           <Card className="bg-secondary shadow border-0">
-            <CardHeader className="bg-transparent pb-5">
-              <div className="text-muted text-center mt-2 mb-3">
-                <small>Sign in with</small>
-              </div>
-              <div className="btn-wrapper text-center">
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={
-                        require("../../assets/img/icons/common/github.svg")
-                          .default
-                      }
-                    />
-                  </span>
-                  <span className="btn-inner--text">Github</span>
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={
-                        require("../../assets/img/icons/common/google.svg")
-                          .default
-                      }
-                    />
-                  </span>
-                  <span className="btn-inner--text">Google</span>
-                </Button>
+            <CardHeader className="bg-transparent">
+              <div className="text-muted text-center mt-2 mb-2">
+                <h1>Login</h1>
               </div>
             </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
-              <div className="text-center text-muted mb-4">
-                <small>Or sign in with credentials</small>
-              </div>
               <Form role="form" onSubmit={login}>
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">
@@ -162,23 +127,10 @@ const Login = () => {
             </CardBody>
           </Card>
           <Row className="mt-3">
-            <Col xs="6">
-              <a
-                className="text-light"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
-                <small>Forgot password?</small>
-              </a>
-            </Col>
-            <Col className="text-right" xs="6">
-              <a
-                className="text-light"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
-              >
+            <Col className="text-lest" xs="6">
+              <Link className="text-light" to="/register">
                 <small>Create new account</small>
-              </a>
+              </Link>
             </Col>
           </Row>
         </Col>

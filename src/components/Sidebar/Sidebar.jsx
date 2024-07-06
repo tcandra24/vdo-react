@@ -113,18 +113,6 @@ const Sidebar = (props) => {
                 <i className="ni ni-single-02" />
                 <span>My profile</span>
               </DropdownItem>
-              <DropdownItem to="/admin/user-profile" tag={Link}>
-                <i className="ni ni-settings-gear-65" />
-                <span>Settings</span>
-              </DropdownItem>
-              <DropdownItem to="/admin/user-profile" tag={Link}>
-                <i className="ni ni-calendar-grid-58" />
-                <span>Activity</span>
-              </DropdownItem>
-              <DropdownItem to="/admin/user-profile" tag={Link}>
-                <i className="ni ni-support-16" />
-                <span>Support</span>
-              </DropdownItem>
               <DropdownItem divider />
               <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
                 <i className="ni ni-user-run" />
@@ -197,12 +185,6 @@ const Sidebar = (props) => {
               <NavLink to="/videos" tag={NavLinkRRD} onClick={closeCollapse}>
                 <i className="ni ni-button-play text-red" />
                 Videos
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink to="#" tag={NavLinkRRD}>
-                <i className="ni ni-tv-2 text-primary" />
-                Logout
               </NavLink>
             </NavItem>
           </Nav>

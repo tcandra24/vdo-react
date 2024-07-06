@@ -92,6 +92,7 @@ const Index = () => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
+                    <th scope="col">Preview</th>
                     <th scope="col">Name</th>
                     <th scope="col">Link</th>
                     <th scope="col" />
@@ -101,6 +102,14 @@ const Index = () => {
                   {videos && videos.length > 0 ? (
                     videos.map((video, index) => (
                       <tr key={index}>
+                        <td>
+                          <img
+                            src={`https://img.youtube.com/vi/${video.link}/mqdefault.jpg`}
+                            alt={video.name}
+                            class="rounded img-thumbnail"
+                            role="button"
+                          />
+                        </td>
                         <td>{video.name}</td>
                         <td>{video.link}</td>
                         <td className="text-right">
@@ -116,6 +125,12 @@ const Index = () => {
                               <i className="fas fa-ellipsis-v" />
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-arrow" right>
+                              <DropdownItem
+                                to={`/videos/show/${video.id}`}
+                                tag={Link}
+                              >
+                                Show
+                              </DropdownItem>
                               <DropdownItem
                                 to={`/videos/edit/${video.id}`}
                                 tag={Link}
@@ -134,7 +149,7 @@ const Index = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="3">
+                      <td colSpan="4">
                         <Alert
                           className="text-center font-weight-bold"
                           color="info"

@@ -12,6 +12,7 @@ import UsersIndex from "../views/admin/users/index";
 
 import VideosIndex from "../views/admin/videos/index";
 import VideosCreate from "../views/admin/videos/create";
+import VideosShow from "../views/admin/videos/show";
 import VideoEdit from "../views/admin/videos/edit";
 
 import Error404 from "views/errors/404";
@@ -55,6 +56,12 @@ export default function AppRoutes() {
         path="/videos/create"
         element={
           isAuthenticated ? <VideosCreate /> : <Navigate to="/login" replace />
+        }
+      />
+      <Route
+        path="/videos/show/:id"
+        element={
+          isAuthenticated ? <VideosShow /> : <Navigate to="/login" replace />
         }
       />
       <Route
