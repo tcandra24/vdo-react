@@ -46,7 +46,7 @@ const Show = () => {
                 <LiteYouTubeEmbed
                   playlist={false}
                   poster="maxresdefault"
-                  id={video.link}
+                  id={video.video_id}
                   title={video.name}
                 />
               </div>

@@ -15,10 +15,10 @@ import {
   InputGroup,
   CardHeader,
   Col,
+  Alert,
 } from "reactstrap";
 
 import api from "services/api";
-import { AuthContext } from "context/Auth";
 
 import AuthLayout from "layouts/Auth";
 
@@ -30,7 +30,6 @@ const Register = () => {
   const [password, setPassword] = useState("");
 
   const [validation, setValidation] = useState([]);
-  const [registerFailed, setRegisterFailed] = useState([]);
 
   const register = async (e) => {
     try {
@@ -49,9 +48,11 @@ const Register = () => {
 
       navigate("/login", { replace: true });
     } catch (error) {
-      console.log(error);
-      // setValidation(error.response.data);
-      // setLoginFailed(error.response.data);
+      if (Array.isArray(error.response.data.message)) {
+        setValidation(error.response.data.message);
+      } else {
+        toast.error(error.response.data.message);
+      }
     }
   };
 
@@ -66,6 +67,15 @@ const Register = () => {
               </div>
             </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
+              {validation.length > 0 && (
+                <Alert className="font-weight-bold" color="danger">
+                  <ul className="m-0 list-group" style={{ listStyle: "none" }}>
+                    {validation.map((validate, index) => (
+                      <li key={index}>{validate.message}</li>
+                    ))}
+                  </ul>
+                </Alert>
+              )}
               <Form role="form" onSubmit={register}>
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">

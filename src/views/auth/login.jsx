@@ -16,6 +16,7 @@ import {
   InputGroup,
   Row,
   Col,
+  Alert,
 } from "reactstrap";
 import cookies from "js-cookie";
 
@@ -32,7 +33,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const [validation, setValidation] = useState([]);
-  const [loginFailed, setLoginFailed] = useState([]);
 
   const login = async (e) => {
     try {
@@ -55,9 +55,11 @@ const Login = () => {
 
       navigate("/dashboard", { replace: true });
     } catch (error) {
-      console.log(error);
-      // setValidation(error.response.data);
-      // setLoginFailed(error.response.data);
+      if (Array.isArray(error.response.data.message)) {
+        setValidation(error.response.data.message);
+      } else {
+        toast.error(error.response.data.message);
+      }
     }
   };
 
@@ -72,6 +74,15 @@ const Login = () => {
               </div>
             </CardHeader>
             <CardBody className="px-lg-5 py-lg-5">
+              {validation.length > 0 && (
+                <Alert className="font-weight-bold" color="danger">
+                  <ul className="m-0 list-group" style={{ listStyle: "none" }}>
+                    {validation.map((validate, index) => (
+                      <li key={index}>{validate.message}</li>
+                    ))}
+                  </ul>
+                </Alert>
+              )}
               <Form role="form" onSubmit={login}>
                 <FormGroup className="mb-3">
                   <InputGroup className="input-group-alternative">
@@ -85,6 +96,7 @@ const Login = () => {
                       type="email"
                       autoComplete="new-email"
                       value={email}
+                      invalid
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </InputGroup>

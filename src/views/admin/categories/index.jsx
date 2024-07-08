@@ -14,7 +14,6 @@ import {
   Container,
   Row,
   Button,
-  Badge,
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
@@ -27,9 +26,9 @@ import cookies from "js-cookie";
 import api from "services/api";
 
 const Index = () => {
-  const [videos, setVideos] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  const fetchVideos = async () => {
+  const fetchCategories = async () => {
     try {
       const token = cookies.get("token");
 
@@ -37,23 +36,23 @@ const Index = () => {
 
       api.defaults.headers.common["Authorization"] = token;
 
-      const { data } = await api.get("/api/videos");
+      const { data } = await api.get("/api/categories");
 
       if (!data.success) {
         throw new Error(data.message);
       }
 
-      setVideos(data.videos);
+      setCategories(data.categories);
     } catch (error) {
       console.log("Error Found ", error.message);
     }
   };
 
   useEffect(() => {
-    fetchVideos();
+    fetchCategories();
   }, []);
 
-  const deleteVideo = async (id) => {
+  const deleteCategory = async (id) => {
     try {
       const token = cookies.get("token");
 
@@ -61,13 +60,13 @@ const Index = () => {
 
       api.defaults.headers.common["Authorization"] = token;
 
-      const { data } = await api.delete(`/api/videos/${id}`);
+      const { data } = await api.delete(`/api/categories/${id}`);
 
       if (!data.success) {
         throw new Error(data.message);
       }
 
-      fetchVideos();
+      fetchCategories();
     } catch (error) {
       console.log("Error Found ", error.message);
     }
@@ -83,44 +82,25 @@ const Index = () => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Videos</h3>
+                <h3 className="mb-0">Categories</h3>
               </CardHeader>
               <div className="m-3">
-                <Link to="/videos/create">
-                  <Button color="primary">Add Video</Button>
+                <Link to="/categories/create">
+                  <Button color="primary">Add Category</Button>
                 </Link>
               </div>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Preview</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Video ID</th>
-                    <th scope="col">Category</th>
                     <th scope="col" />
                   </tr>
                 </thead>
                 <tbody>
-                  {videos && videos.length > 0 ? (
-                    videos.map((video, index) => (
+                  {categories && categories.length > 0 ? (
+                    categories.map((category, index) => (
                       <tr key={index}>
-                        <td>
-                          <Link to={`/videos/show/${video.id}`}>
-                            <img
-                              src={`https://img.youtube.com/vi/${video.video_id}/mqdefault.jpg`}
-                              alt={video.name}
-                              className="rounded img-thumbnail"
-                              role="button"
-                            />
-                          </Link>
-                        </td>
-                        <td>{video.name}</td>
-                        <td>{video.video_id}</td>
-                        <td>
-                          <Badge color="primary" pill>
-                            {video.category.name}
-                          </Badge>
-                        </td>
+                        <td>{category.name}</td>
                         <td className="text-right">
                           <UncontrolledDropdown>
                             <DropdownToggle
@@ -135,19 +115,13 @@ const Index = () => {
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-arrow" right>
                               <DropdownItem
-                                to={`/videos/show/${video.id}`}
-                                tag={Link}
-                              >
-                                Show
-                              </DropdownItem>
-                              <DropdownItem
-                                to={`/videos/edit/${video.id}`}
+                                to={`/categories/edit/${category.id}`}
                                 tag={Link}
                               >
                                 Edit
                               </DropdownItem>
                               <DropdownItem
-                                onClick={() => deleteVideo(video.id)}
+                                onClick={() => deleteCategory(category.id)}
                               >
                                 Delete
                               </DropdownItem>
@@ -158,12 +132,12 @@ const Index = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="5">
+                      <td colSpan="2">
                         <Alert
                           className="text-center font-weight-bold"
                           color="info"
                         >
-                          Videos is Empty
+                          Categories is Empty
                         </Alert>
                       </td>
                     </tr>

@@ -182,6 +182,16 @@ const Sidebar = (props) => {
               </NavLink>
             </NavItem>
             <NavItem>
+              <NavLink
+                to="/categories"
+                tag={NavLinkRRD}
+                onClick={closeCollapse}
+              >
+                <i className="ni ni-collection text-gray" />
+                Categories
+              </NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink to="/videos" tag={NavLinkRRD} onClick={closeCollapse}>
                 <i className="ni ni-button-play text-red" />
                 Videos

@@ -25,10 +25,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const Create = () => {
   const [name, setName] = useState("");
-  const [videoId, setVideoId] = useState("");
-  const [categories, setCategories] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-
   const [validation, setValidation] = useState([]);
 
   const token = cookies.get("token");
@@ -36,38 +32,15 @@ const Create = () => {
 
   const { id } = useParams();
 
-  const fetchCategories = async () => {
-    try {
-      const token = cookies.get("token");
-
-      if (!token) return new Error("Token Not Found");
-
-      api.defaults.headers.common["Authorization"] = token;
-
-      const { data } = await api.get("/api/categories");
-
-      if (!data.success) {
-        throw new Error(data.message);
-      }
-
-      setCategories(data.categories);
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
-  const getDetailVideo = async () => {
+  const getDetailCategory = async () => {
     api.defaults.headers.common["Authorization"] = token;
-    const { data } = await api.get(`/api/videos/${id}`);
+    const { data } = await api.get(`/api/categories/${id}`);
 
     setName(data.data.name);
-    setVideoId(data.data.video_id);
-    setCategoryId(data.data.category.id);
   };
 
   useEffect(() => {
-    getDetailVideo();
-    fetchCategories();
+    getDetailCategory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -76,10 +49,8 @@ const Create = () => {
       e.preventDefault();
 
       api.defaults.headers.common["Authorization"] = token;
-      const { data } = await api.put(`/api/videos/${id}`, {
+      const { data } = await api.put(`/api/categories/${id}`, {
         name,
-        video_id: videoId,
-        category_id: categoryId,
       });
 
       if (!data.success) {
@@ -88,7 +59,7 @@ const Create = () => {
 
       toast.success(data.message);
 
-      navigate("/videos", { replace: true });
+      navigate("/categories", { replace: true });
     } catch (error) {
       if (Array.isArray(error.response.data.message)) {
         setValidation(error.response.data.message);
@@ -108,7 +79,7 @@ const Create = () => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Videos</h3>
+                <h3 className="mb-0">Edit Category</h3>
               </CardHeader>
               {validation.length > 0 && (
                 <Alert className="font-weight-bold m-3" color="danger">
@@ -127,43 +98,9 @@ const Create = () => {
                       <Input
                         id="name"
                         name="name"
-                        placeholder=""
+                        placeholder="Category Name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label for="name">Category</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder=""
-                        type="select"
-                        value={categoryId}
-                        onChange={(e) => setCategoryId(e.target.value)}
-                      >
-                        {categories &&
-                          categories.map((category) => (
-                            <option key={category.id} value={category.id}>
-                              {category.name}
-                            </option>
-                          ))}
-                      </Input>
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
-                    <FormGroup>
-                      <Label for="link">Link</Label>
-                      <Input
-                        id="link"
-                        name="link"
-                        placeholder=""
-                        value={videoId}
-                        onChange={(e) => setVideoId(e.target.value)}
                       />
                     </FormGroup>
                   </Col>

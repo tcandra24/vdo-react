@@ -15,6 +15,10 @@ import VideosCreate from "../views/admin/videos/create";
 import VideosShow from "../views/admin/videos/show";
 import VideoEdit from "../views/admin/videos/edit";
 
+import CatgeoriesIndex from "../views/admin/categories/index";
+import CatgeoriesCreate from "../views/admin/categories/create";
+import CatgeoriesEdit from "../views/admin/categories/edit";
+
 import Error404 from "views/errors/404";
 
 export default function AppRoutes() {
@@ -68,6 +72,36 @@ export default function AppRoutes() {
         path="/videos/edit/:id"
         element={
           isAuthenticated ? <VideoEdit /> : <Navigate to="/login" replace />
+        }
+      />
+      <Route
+        path="/categories"
+        element={
+          isAuthenticated ? (
+            <CatgeoriesIndex />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/categories/create"
+        element={
+          isAuthenticated ? (
+            <CatgeoriesCreate />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+      <Route
+        path="/categories/edit/:id"
+        element={
+          isAuthenticated ? (
+            <CatgeoriesEdit />
+          ) : (
+            <Navigate to="/login" replace />
+          )
         }
       />
       <Route path="*" element={<Error404 />} />
