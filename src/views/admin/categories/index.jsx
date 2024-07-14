@@ -15,20 +15,27 @@ import {
   Row,
   Button,
 } from "reactstrap";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 import { Link } from "react-router-dom";
 // core components
 import Header from "components/Headers/Header";
 import AdminLayout from "layouts/Admin";
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
+
+import { categoryReducer, INITIAL_STATE } from "reducers/categoryReducer";
+// import { getData } from "actions/categoriesAction";
 
 import cookies from "js-cookie";
 import api from "services/api";
 
 const Index = () => {
-  const [categories, setCategories] = useState([]);
+  const [state, dispatch] = useReducer(categoryReducer, INITIAL_STATE);
 
   const fetchCategories = async () => {
+    dispatch({ type: "FETCH_CATEGORIES" });
+
     try {
       const token = cookies.get("token");
 
@@ -42,9 +49,9 @@ const Index = () => {
         throw new Error(data.message);
       }
 
-      setCategories(data.categories);
+      dispatch({ type: "FETCH_CATEGORIES_SUCCESS", payload: data.categories });
     } catch (error) {
-      console.log("Error Found ", error.message);
+      dispatch({ type: "FETCH_CATEGORIES_FAILURE", payload: error.message });
     }
   };
 
@@ -52,7 +59,25 @@ const Index = () => {
     fetchCategories();
   }, []);
 
+  const confirmDelete = (id) => {
+    withReactContent(Swal)
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          deleteCategory(id);
+        }
+      });
+  };
+
   const deleteCategory = async (id) => {
+    dispatch({ type: "DELETE_CATEGORIES" });
+
     try {
       const token = cookies.get("token");
 
@@ -66,9 +91,11 @@ const Index = () => {
         throw new Error(data.message);
       }
 
+      dispatch({ type: "DELETE_CATEGORIES_SUCCESS" });
+
       fetchCategories();
     } catch (error) {
-      console.log("Error Found ", error.message);
+      dispatch({ type: "DELETE_CATEGORIES_FAILURE", payload: error.message });
     }
   };
 
@@ -97,8 +124,37 @@ const Index = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {categories && categories.length > 0 ? (
-                    categories.map((category, index) => (
+                  {state.loading && (
+                    <tr>
+                      <td colSpan="2">
+                        <Alert
+                          className="text-center font-weight-bold"
+                          color="info"
+                        >
+                          Loading
+                        </Alert>
+                      </td>
+                    </tr>
+                  )}
+
+                  {state.categories &&
+                    !state.loading &&
+                    state.categories.length === 0 && (
+                      <tr>
+                        <td colSpan="2">
+                          <Alert
+                            className="text-center font-weight-bold"
+                            color="info"
+                          >
+                            Categories is Empty
+                          </Alert>
+                        </td>
+                      </tr>
+                    )}
+
+                  {!state.loading &&
+                    state.categories.length > 0 &&
+                    state.categories.map((category, index) => (
                       <tr key={index}>
                         <td>{category.name}</td>
                         <td className="text-right">
@@ -121,7 +177,7 @@ const Index = () => {
                                 Edit
                               </DropdownItem>
                               <DropdownItem
-                                onClick={() => deleteCategory(category.id)}
+                                onClick={() => confirmDelete(category.id)}
                               >
                                 Delete
                               </DropdownItem>
@@ -129,19 +185,7 @@ const Index = () => {
                           </UncontrolledDropdown>
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="2">
-                        <Alert
-                          className="text-center font-weight-bold"
-                          color="info"
-                        >
-                          Categories is Empty
-                        </Alert>
-                      </td>
-                    </tr>
-                  )}
+                    ))}
                 </tbody>
               </Table>
               <CardFooter className="py-4">

@@ -39,6 +39,12 @@ export default function AppRoutes() {
         }
       />
       <Route
+        path="/"
+        element={
+          isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />
+        }
+      />
+      <Route
         path="/dashboard"
         element={
           isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />

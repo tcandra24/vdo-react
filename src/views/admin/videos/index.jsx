@@ -16,20 +16,26 @@ import {
   Button,
   Badge,
 } from "reactstrap";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 import { Link } from "react-router-dom";
 // core components
 import Header from "components/Headers/Header";
 import AdminLayout from "layouts/Admin";
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
+
+import { videoReducer, INITIAL_STATE } from "reducers/videoReducer";
 
 import cookies from "js-cookie";
 import api from "services/api";
 
 const Index = () => {
-  const [videos, setVideos] = useState([]);
+  const [state, dispatch] = useReducer(videoReducer, INITIAL_STATE);
 
   const fetchVideos = async () => {
+    dispatch({ type: "FETCH_VIDEOS" });
+
     try {
       const token = cookies.get("token");
 
@@ -43,9 +49,9 @@ const Index = () => {
         throw new Error(data.message);
       }
 
-      setVideos(data.videos);
+      dispatch({ type: "FETCH_VIDEOS_SUCCESS", payload: data.videos });
     } catch (error) {
-      console.log("Error Found ", error.message);
+      dispatch({ type: "FETCH_VIDEOS_FAILURE", payload: error.message });
     }
   };
 
@@ -53,7 +59,25 @@ const Index = () => {
     fetchVideos();
   }, []);
 
+  const confirmDelete = (id) => {
+    withReactContent(Swal)
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          deleteVideo(id);
+        }
+      });
+  };
+
   const deleteVideo = async (id) => {
+    dispatch({ type: "DELETE_VIDEOS" });
+
     try {
       const token = cookies.get("token");
 
@@ -67,9 +91,11 @@ const Index = () => {
         throw new Error(data.message);
       }
 
+      dispatch({ type: "DELETE_VIDEOS_SUCCESS" });
+
       fetchVideos();
     } catch (error) {
-      console.log("Error Found ", error.message);
+      dispatch({ type: "DELETE_VIDEOS_FAILURE", payload: error.message });
     }
   };
 
@@ -101,8 +127,37 @@ const Index = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {videos && videos.length > 0 ? (
-                    videos.map((video, index) => (
+                  {state.loading && (
+                    <tr>
+                      <td colSpan="5">
+                        <Alert
+                          className="text-center font-weight-bold"
+                          color="info"
+                        >
+                          Loading
+                        </Alert>
+                      </td>
+                    </tr>
+                  )}
+
+                  {state.videos &&
+                    !state.loading &&
+                    state.videos.length === 0 && (
+                      <tr>
+                        <td colSpan="5">
+                          <Alert
+                            className="text-center font-weight-bold"
+                            color="info"
+                          >
+                            Videos is Empty
+                          </Alert>
+                        </td>
+                      </tr>
+                    )}
+
+                  {!state.loading &&
+                    state.videos.length > 0 &&
+                    state.videos.map((video, index) => (
                       <tr key={index}>
                         <td>
                           <Link to={`/videos/show/${video.id}`}>
@@ -147,7 +202,7 @@ const Index = () => {
                                 Edit
                               </DropdownItem>
                               <DropdownItem
-                                onClick={() => deleteVideo(video.id)}
+                                onClick={() => confirmDelete(video.id)}
                               >
                                 Delete
                               </DropdownItem>
@@ -155,19 +210,7 @@ const Index = () => {
                           </UncontrolledDropdown>
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="5">
-                        <Alert
-                          className="text-center font-weight-bold"
-                          color="info"
-                        >
-                          Videos is Empty
-                        </Alert>
-                      </td>
-                    </tr>
-                  )}
+                    ))}
                 </tbody>
               </Table>
               <CardFooter className="py-4">

@@ -13,15 +13,19 @@ import {
 // core components
 import Header from "components/Headers/Header";
 import AdminLayout from "layouts/Admin";
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
+
+import { userReducer, INITIAL_STATE } from "reducers/userReducer";
 
 import cookies from "js-cookie";
 import api from "services/api";
 
 const Index = () => {
-  const [users, setUsers] = useState([]);
+  const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);
 
   const fetchUsers = async () => {
+    dispatch({ type: "FETCH_USERS" });
+
     try {
       const token = cookies.get("token");
 
@@ -35,9 +39,9 @@ const Index = () => {
         throw new Error(data.message);
       }
 
-      setUsers(data.users);
+      dispatch({ type: "FETCH_USERS_SUCCESS", payload: data.users });
     } catch (error) {
-      console.log("Error Found ", error.message);
+      dispatch({ type: "FETCH_USERS_FAILURE", payload: error.message });
     }
   };
 
@@ -65,25 +69,43 @@ const Index = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {users && users.length > 0 ? (
-                    users.map((user, index) => (
-                      <tr key={index}>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                      </tr>
-                    ))
-                  ) : (
+                  {state.loading && (
                     <tr>
-                      <td colSpan="3">
+                      <td colSpan="2">
                         <Alert
                           className="text-center font-weight-bold"
                           color="info"
                         >
-                          Users is Empty
+                          Loading
                         </Alert>
                       </td>
                     </tr>
                   )}
+
+                  {state.users &&
+                    !state.loading &&
+                    state.users.length === 0 && (
+                      <tr>
+                        <td colSpan="2">
+                          <Alert
+                            className="text-center font-weight-bold"
+                            color="info"
+                          >
+                            User is Empty
+                          </Alert>
+                        </td>
+                      </tr>
+                    )}
+
+                  {!state.loading &&
+                    state.users &&
+                    state.users.length > 0 &&
+                    state.users.map((user, index) => (
+                      <tr key={index}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </Table>
               <CardFooter className="py-4">

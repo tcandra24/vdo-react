@@ -28,10 +28,12 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [validation, setValidation] = useState([]);
 
   const register = async (e) => {
+    setLoading(true);
     try {
       e.preventDefault();
       const { data } = await api.post("/api/register", {
@@ -44,6 +46,8 @@ const Register = () => {
         throw new Error(data.message);
       }
 
+      setLoading(false);
+
       toast.success(data.message);
 
       navigate("/login", { replace: true });
@@ -53,6 +57,8 @@ const Register = () => {
       } else {
         toast.error(error.response.data.message);
       }
+
+      setLoading(false);
     }
   };
 
@@ -126,7 +132,12 @@ const Register = () => {
                   </InputGroup>
                 </FormGroup>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="submit">
+                  <Button
+                    className="my-4"
+                    color="primary"
+                    type="submit"
+                    disabled={loading}
+                  >
                     Register
                   </Button>
                 </div>

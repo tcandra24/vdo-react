@@ -12,8 +12,8 @@ const Admin = ({ children }) => {
       <Sidebar
         logo={{
           innerLink: "/dashboard",
-          imgSrc: require("../assets/img/brand/argon-react.png"),
-          imgAlt: "...",
+          imgSrc: require("../assets/img/brand/logo.png"),
+          imgAlt: "VDO Dashboard",
         }}
       />
       <div className="main-content">

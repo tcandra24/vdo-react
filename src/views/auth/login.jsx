@@ -31,10 +31,12 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [validation, setValidation] = useState([]);
 
   const login = async (e) => {
+    setLoading(true);
     try {
       e.preventDefault();
       const { data } = await api.post("/api/login", {
@@ -45,6 +47,8 @@ const Login = () => {
       if (!data.success) {
         throw new Error(data.message);
       }
+
+      setLoading(false);
 
       toast.success(data.message);
 
@@ -60,6 +64,8 @@ const Login = () => {
       } else {
         toast.error(error.response.data.message);
       }
+
+      setLoading(false);
     }
   };
 
@@ -131,7 +137,12 @@ const Login = () => {
                   </label>
                 </div>
                 <div className="text-center">
-                  <Button className="my-4" color="primary" type="submit">
+                  <Button
+                    className="my-4"
+                    color="primary"
+                    type="submit"
+                    disabled={loading}
+                  >
                     Sign in
                   </Button>
                 </div>
