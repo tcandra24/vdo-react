@@ -6,12 +6,8 @@
   "keywords": [
     "react",
     "reactjs",
-    "argon",
-    "argon-react",
     "dashboard",
-    "dashboard-react",
-    "argon-dashboard",
-    "argon-dashboard-react"
+    "dashboard-react"
   ],
   "author": "Creative Tim",
   "license": "MIT",
