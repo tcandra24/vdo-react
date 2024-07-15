@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, NavLink as NavLinkRRD } from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
+import cookies from "js-cookie";
 
 // reactstrap components
 import {
@@ -29,6 +30,7 @@ import {
 
 const Sidebar = (props) => {
   const [collapseOpen, setCollapseOpen] = useState();
+  const user = JSON.parse(cookies.get("user"));
 
   const toggleCollapse = () => {
     setCollapseOpen((data) => !data);
@@ -100,7 +102,7 @@ const Sidebar = (props) => {
                 <span className="avatar avatar-sm rounded-circle">
                   <img
                     alt="..."
-                    src={require("../../assets/img/theme/team-1-800x800.jpg")}
+                    src={`https://ui-avatars.com/api/?name=${user.name}&background=0D8ABC&color=fff`}
                   />
                 </span>
               </Media>

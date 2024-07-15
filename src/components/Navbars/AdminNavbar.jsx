@@ -67,7 +67,7 @@ const AdminNavbar = (props) => {
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
                     <img
-                      alt="..."
+                      alt={user.name}
                       src={`https://ui-avatars.com/api/?name=${user.name}&background=0D8ABC&color=fff`}
                     />
                   </span>
