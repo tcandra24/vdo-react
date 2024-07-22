@@ -25,6 +25,8 @@ import Header from "components/Headers/Header";
 import AdminLayout from "layouts/Admin";
 import { useEffect, useReducer } from "react";
 
+import { toast } from "react-toastify";
+
 import { videoReducer, INITIAL_STATE } from "reducers/videoReducer";
 
 import cookies from "js-cookie";
@@ -90,6 +92,8 @@ const Index = () => {
       if (!data.success) {
         throw new Error(data.message);
       }
+
+      toast.success(data.message);
 
       dispatch({ type: "DELETE_VIDEOS_SUCCESS" });
 

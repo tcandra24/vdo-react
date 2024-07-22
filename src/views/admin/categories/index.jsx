@@ -24,6 +24,8 @@ import Header from "components/Headers/Header";
 import AdminLayout from "layouts/Admin";
 import { useEffect, useReducer } from "react";
 
+import { toast } from "react-toastify";
+
 import { categoryReducer, INITIAL_STATE } from "reducers/categoryReducer";
 // import { getData } from "actions/categoriesAction";
 
@@ -90,6 +92,8 @@ const Index = () => {
       if (!data.success) {
         throw new Error(data.message);
       }
+
+      toast.success(data.message);
 
       dispatch({ type: "DELETE_CATEGORIES_SUCCESS" });
 
