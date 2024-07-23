@@ -18,9 +18,9 @@ import {
   Alert,
 } from "reactstrap";
 
-import api from "services/api";
+import api from "../../services/api";
 
-import AuthLayout from "layouts/Auth";
+import AuthLayout from "../../layouts/Auth";
 
 const Register = () => {
   const navigate = useNavigate();

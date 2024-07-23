@@ -11,14 +11,14 @@ import {
   Row,
 } from "reactstrap";
 // core components
-import Header from "components/Headers/Header";
-import AdminLayout from "layouts/Admin";
+import Header from "../../../components/Headers/Header";
+import AdminLayout from "../../../layouts/Admin";
 import { useEffect, useReducer } from "react";
 
-import { userReducer, INITIAL_STATE } from "reducers/userReducer";
+import { userReducer, INITIAL_STATE } from "../../../reducers/userReducer";
 
 import cookies from "js-cookie";
-import api from "services/api";
+import api from "../../../services/api";
 
 const Index = () => {
   const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);

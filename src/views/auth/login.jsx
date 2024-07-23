@@ -20,10 +20,10 @@ import {
 } from "reactstrap";
 import cookies from "js-cookie";
 
-import api from "services/api";
-import { AuthContext } from "context/Auth";
+import api from "../../services/api";
+import { AuthContext } from "../../context/Auth";
 
-import AuthLayout from "layouts/Auth";
+import AuthLayout from "../../layouts/Auth";
 
 const Login = () => {
   const navigate = useNavigate();

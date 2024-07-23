@@ -21,16 +21,16 @@ import withReactContent from "sweetalert2-react-content";
 
 import { Link } from "react-router-dom";
 // core components
-import Header from "components/Headers/Header";
-import AdminLayout from "layouts/Admin";
+import Header from "../../../components/Headers/Header";
+import AdminLayout from "../../../layouts/Admin";
 import { useEffect, useReducer } from "react";
 
 import { toast } from "react-toastify";
 
-import { videoReducer, INITIAL_STATE } from "reducers/videoReducer";
+import { videoReducer, INITIAL_STATE } from "../../../reducers/videoReducer";
 
 import cookies from "js-cookie";
-import api from "services/api";
+import api from "../../../services/api";
 
 const Index = () => {
   const [state, dispatch] = useReducer(videoReducer, INITIAL_STATE);

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 
 import cookies from "js-cookie";
-import { AuthContext } from "context/Auth";
+import { AuthContext } from "../../context/Auth";
 // reactstrap components
 import {
   DropdownMenu,

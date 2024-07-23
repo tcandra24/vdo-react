@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import { AuthContext } from "context/Auth";
+import { AuthContext } from "../context/Auth";
 
 import Register from "../views/auth/register";
 import Login from "../views/auth/login";
@@ -19,7 +19,7 @@ import CatgeoriesIndex from "../views/admin/categories/index";
 import CatgeoriesCreate from "../views/admin/categories/create";
 import CatgeoriesEdit from "../views/admin/categories/edit";
 
-import Error404 from "views/errors/404";
+import Error404 from "../views/errors/404";
 
 export default function AppRoutes() {
   const { isAuthenticated } = useContext(AuthContext);

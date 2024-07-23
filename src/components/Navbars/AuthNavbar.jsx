@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logoImg from "../../assets/img/brand/logo.png";
 // reactstrap components
 import {
   UncontrolledCollapse,
@@ -21,7 +22,7 @@ const AdminNavbar = () => {
             <img
               alt="VDO"
               style={{ filter: "brightness(0) invert(1)" }}
-              src={require("../../assets/img/brand/logo.png")}
+              src={logoImg}
             />
           </NavbarBrand>
           <button className="navbar-toggler" id="navbar-collapse-main">
@@ -35,7 +36,7 @@ const AdminNavbar = () => {
                     <img
                       alt="VDO"
                       style={{ filter: "brightness(0) invert(1)" }}
-                      src={require("../../assets/img/brand/logo.png")}
+                      src={logoImg}
                     />
                   </Link>
                 </Col>

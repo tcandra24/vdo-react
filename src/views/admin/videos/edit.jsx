@@ -12,10 +12,10 @@ import {
   Alert,
 } from "reactstrap";
 // core components
-import Header from "components/Headers/Header";
-import AdminLayout from "layouts/Admin";
+import Header from "../../../components/Headers/Header";
+import AdminLayout from "../../../layouts/Admin";
 import { useEffect, useReducer } from "react";
-import useInput from "hooks/useInput";
+import useInput from "../../../hooks/useInput";
 
 import { toast } from "react-toastify";
 
@@ -24,13 +24,13 @@ import cookies from "js-cookie";
 import {
   videoReducer,
   INITIAL_STATE as INITIAL_STATE_VIDEO,
-} from "reducers/videoReducer";
+} from "../../../reducers/videoReducer";
 import {
   categoryReducer,
   INITIAL_STATE as INITIAL_STATE_CATEGORY,
-} from "reducers/categoryReducer";
+} from "../../../reducers/categoryReducer";
 
-import api from "services/api";
+import api from "../../../services/api";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Create = () => {

@@ -3,17 +3,17 @@ import { Card, CardHeader, Container, Row } from "reactstrap";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
-import Header from "components/Headers/Header";
-import AdminLayout from "layouts/Admin";
+import Header from "../../../components/Headers/Header";
+import AdminLayout from "../../../layouts/Admin";
 import { useReducer, useEffect } from "react";
 
 import { toast } from "react-toastify";
 
 import cookies from "js-cookie";
 
-import { videoReducer, INITIAL_STATE } from "reducers/videoReducer";
+import { videoReducer, INITIAL_STATE } from "../../../reducers/videoReducer";
 
-import api from "services/api";
+import api from "../../../services/api";
 import { useParams } from "react-router-dom";
 
 const Show = () => {

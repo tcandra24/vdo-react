@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 
-import AuthNavbar from "components/Navbars/AuthNavbar";
-import AuthFooter from "components/Footers/AuthFooter";
+import AuthNavbar from "../components/Navbars/AuthNavbar";
+import AuthFooter from "../components/Footers/AuthFooter";
 
 const Auth = ({ children }) => {
   React.useEffect(() => {

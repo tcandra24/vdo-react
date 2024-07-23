@@ -2,9 +2,9 @@ import { Container, Row, Col, Alert, Card } from "reactstrap";
 
 import cookies from "js-cookie";
 
-import AdminLayout from "layouts/Admin";
+import AdminLayout from "../../../layouts/Admin";
 
-import Header from "components/Headers/Header";
+import Header from "../../../components/Headers/Header";
 
 const Index = () => {
   const user = JSON.parse(cookies.get("user"));
