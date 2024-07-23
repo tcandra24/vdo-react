@@ -1,7 +1,7 @@
 {
-  "name": "frontend-video",
-  "version": "1.2.4",
-  "description": "React version of Argon Dashboard by Creative Tim",
+  "name": "vdo",
+  "version": "1.0.0",
+  "description": "VDO Save Your Video For Later",
   "main": "index.js",
   "keywords": [
     "react",
