@@ -35,8 +35,12 @@ import {
 import cookies from "js-cookie";
 import api from "../../../services/api";
 
+import { AuthContext } from "../../../context/Auth";
+import { useContext } from "react";
+
 const Index = () => {
   const [state, dispatch] = useReducer(categoryReducer, INITIAL_STATE);
+  const { fetchDataDashboard } = useContext(AuthContext);
 
   const fetchCategories = async () => {
     dispatch({ type: "FETCH_CATEGORIES" });
@@ -101,6 +105,7 @@ const Index = () => {
       dispatch({ type: "DELETE_CATEGORIES_SUCCESS" });
 
       fetchCategories();
+      fetchDataDashboard();
     } catch (error) {
       dispatch({ type: "DELETE_CATEGORIES_FAILURE", payload: error.message });
     }

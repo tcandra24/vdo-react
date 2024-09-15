@@ -1,6 +1,12 @@
 import {
   Alert,
   Card,
+  CardGroup,
+  CardImg,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  CardText,
   CardHeader,
   CardFooter,
   DropdownMenu,
@@ -13,6 +19,7 @@ import {
   Table,
   Container,
   Row,
+  Col,
   Button,
   Badge,
 } from "reactstrap";
@@ -32,8 +39,12 @@ import { videoReducer, INITIAL_STATE } from "../../../reducers/videoReducer";
 import cookies from "js-cookie";
 import api from "../../../services/api";
 
+import { AuthContext } from "../../../context/Auth";
+import { useContext } from "react";
+
 const Index = () => {
   const [state, dispatch] = useReducer(videoReducer, INITIAL_STATE);
+  const { fetchDataDashboard } = useContext(AuthContext);
 
   const fetchVideos = async () => {
     dispatch({ type: "FETCH_VIDEOS" });
@@ -98,6 +109,7 @@ const Index = () => {
       dispatch({ type: "DELETE_VIDEOS_SUCCESS" });
 
       fetchVideos();
+      fetchDataDashboard();
     } catch (error) {
       dispatch({ type: "DELETE_VIDEOS_FAILURE", payload: error.message });
     }
@@ -120,103 +132,96 @@ const Index = () => {
                   <Button color="primary">Add Video</Button>
                 </Link>
               </div>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Preview</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Video ID</th>
-                    <th scope="col">Category</th>
-                    <th scope="col" />
-                  </tr>
-                </thead>
-                <tbody>
-                  {state.loading && (
-                    <tr>
-                      <td colSpan="5">
-                        <Alert
-                          className="text-center font-weight-bold"
-                          color="info"
-                        >
-                          Loading
-                        </Alert>
-                      </td>
-                    </tr>
-                  )}
+              {state.loading && (
+                <Row className="m-3">
+                  <Col>
+                    <Alert
+                      className="text-center font-weight-bold"
+                      color="info"
+                    >
+                      Loading
+                    </Alert>
+                  </Col>
+                </Row>
+              )}
 
-                  {state.videos &&
-                    !state.loading &&
-                    state.videos.length === 0 && (
-                      <tr>
-                        <td colSpan="5">
-                          <Alert
-                            className="text-center font-weight-bold"
-                            color="info"
-                          >
-                            Videos is Empty
-                          </Alert>
-                        </td>
-                      </tr>
-                    )}
+              {state.videos && !state.loading && state.videos.length === 0 && (
+                <Row className="m-3">
+                  <Col>
+                    <Alert
+                      className="text-center font-weight-bold"
+                      color="info"
+                    >
+                      Videos is Empty
+                    </Alert>
+                  </Col>
+                </Row>
+              )}
 
-                  {!state.loading &&
-                    state.videos.length > 0 &&
-                    state.videos.map((video, index) => (
-                      <tr key={index}>
-                        <td>
-                          <Link to={`/videos/show/${video.id}`}>
-                            <img
-                              src={`https://img.youtube.com/vi/${video.video_id}/mqdefault.jpg`}
-                              alt={video.name}
-                              className="rounded img-thumbnail"
-                              role="button"
-                            />
-                          </Link>
-                        </td>
-                        <td>{video.name}</td>
-                        <td>{video.video_id}</td>
-                        <td>
-                          <Badge color="primary" pill>
-                            {video.category.name}
-                          </Badge>
-                        </td>
-                        <td className="text-right">
-                          <UncontrolledDropdown>
-                            <DropdownToggle
-                              className="btn-icon-only text-light"
-                              href="#actions"
-                              role="button"
-                              size="sm"
-                              color=""
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              <i className="fas fa-ellipsis-v" />
-                            </DropdownToggle>
-                            <DropdownMenu className="dropdown-menu-arrow" right>
-                              <DropdownItem
-                                to={`/videos/show/${video.id}`}
-                                tag={Link}
+              <Row className="m-3">
+                {!state.loading &&
+                  state.videos.length > 0 &&
+                  state.videos.map((video, index) => (
+                    <Col sm="4" xs="6" key={index}>
+                      <Card className="mx-1">
+                        <Link to={`/videos/show/${video.id}`}>
+                          <CardImg
+                            alt="Card image cap"
+                            src={`https://img.youtube.com/vi/${video.video_id}/mqdefault.jpg`}
+                            top
+                            width="100%"
+                          />
+                        </Link>
+                        <CardBody>
+                          <CardTitle tag="h5">{video.name}</CardTitle>
+                          <CardSubtitle className="mb-2 text-muted" tag="h6">
+                            <Badge color="primary" pill>
+                              {video.category.name}
+                            </Badge>
+                          </CardSubtitle>
+
+                          <Row className="justify-content-end">
+                            <UncontrolledDropdown>
+                              <DropdownToggle
+                                className="btn-icon-only text-light"
+                                href="#actions"
+                                role="button"
+                                size="sm"
+                                color=""
+                                onClick={(e) => e.preventDefault()}
                               >
-                                Show
-                              </DropdownItem>
-                              <DropdownItem
-                                to={`/videos/edit/${video.id}`}
-                                tag={Link}
+                                <i className="fas fa-ellipsis-v" />
+                              </DropdownToggle>
+                              <DropdownMenu
+                                className="dropdown-menu-arrow"
+                                right
                               >
-                                Edit
-                              </DropdownItem>
-                              <DropdownItem
-                                onClick={() => confirmDelete(video.id)}
-                              >
-                                Delete
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </UncontrolledDropdown>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </Table>
+                                <DropdownItem
+                                  to={`/videos/show/${video.id}`}
+                                  tag={Link}
+                                >
+                                  Show
+                                </DropdownItem>
+                                <DropdownItem
+                                  to={`/videos/edit/${video.id}`}
+                                  tag={Link}
+                                >
+                                  Edit
+                                </DropdownItem>
+                                <DropdownItem
+                                  onClick={() => confirmDelete(video.id)}
+                                >
+                                  Delete
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                          </Row>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  ))}
+              </Row>
+
               <CardFooter className="py-4">
                 <nav aria-label="...">
                   <Pagination

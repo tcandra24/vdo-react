@@ -1,6 +1,10 @@
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import { AuthContext } from "../../context/Auth";
+import { useContext } from "react";
 
 const Header = () => {
+  const { counts } = useContext(AuthContext);
+
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -19,7 +23,9 @@ const Header = () => {
                         >
                           Videos
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">0</span>
+                        <span className="h2 font-weight-bold mb-0">
+                          {counts.video.state}
+                        </span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -41,7 +47,9 @@ const Header = () => {
                         >
                           Category
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">0</span>
+                        <span className="h2 font-weight-bold mb-0">
+                          {counts.category.state}
+                        </span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -63,7 +71,9 @@ const Header = () => {
                         >
                           User
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">0</span>
+                        <span className="h2 font-weight-bold mb-0">
+                          {counts.user.state}
+                        </span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-info text-white rounded-circle shadow">

@@ -1,6 +1,6 @@
 {
   "name": "vdo",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "VDO Save Your Video For Later",
   "main": "index.js",
   "keywords": [

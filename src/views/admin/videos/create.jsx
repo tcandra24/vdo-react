@@ -33,6 +33,9 @@ import {
 import api from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 
+import { AuthContext } from "../../../context/Auth";
+import { useContext } from "react";
+
 const Create = () => {
   const name = useInput("");
   const videoId = useInput("");
@@ -49,6 +52,8 @@ const Create = () => {
 
   const token = cookies.get("token");
   const navigate = useNavigate();
+
+  const { fetchDataDashboard } = useContext(AuthContext);
 
   const fetchCategories = async () => {
     dispatchCategory({ type: "FETCH_CATEGORIES" });
@@ -103,6 +108,7 @@ const Create = () => {
 
       dispatchVideo({ type: "ADD_VIDEOS_SUCCESS" });
 
+      fetchDataDashboard();
       navigate("/videos", { replace: true });
     } catch (error) {
       if (Array.isArray(error.response.data.message)) {
